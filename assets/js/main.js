@@ -142,6 +142,9 @@ function getCocktailByName(){
   // const searchResults = document.querySelector('.searchResults')
   document.querySelector('.searchResults').innerHTML = ''; // clear previous search
   document.querySelector('#cocktailSearchResult').innerHTML = '';
+  searchResults.scrollIntoView({
+    behavior: 'smooth',
+  });
 
   let cocktail = document.querySelector('.searchByName').value
 
@@ -190,6 +193,9 @@ document.querySelector('#byIngredient').addEventListener('click', getCocktailByI
   function getCocktailByIngredient(){
     document.querySelector('.searchResults').innerHTML = ''; 
     document.querySelector('#cocktailSearchResult').innerHTML = '';
+    searchResults.scrollIntoView({
+      behavior: 'smooth',
+    });
 
     let ingredient = document.querySelector('.searchByIngredient').value
   

@@ -83,10 +83,10 @@ input, select, textarea {
 	body {
 
 
-    background-color: #b0008e;
+    background-color: #fff;
 		/* background-attachment: scroll,							fixed; */
     /* background-image:linear-gradient(45deg, #B800FF 5%, #FF00C6 50%, #3900FF); */
-    background-image:linear-gradient(45deg,  #FF00C6 40%, #2FF3E0);
+    /* background-image:linear-gradient(45deg,  #FF00C6 40%, #2FF3E0); */
     /* background-image:linear-gradient(45deg, #2FF3E0 10%, #F8D210 15%, #FA26A0 50%, #F51720); */
 
     /* background-image: url("images/overlay1.png"), url("../../images/bg_ninjamode.png"); */
@@ -2997,7 +2997,7 @@ input, select, textarea {
 
 	#copyright {
     color: #fff;
-		margin-bottom: 6em;
+		margin-bottom: 1em;
 		text-align: center;
 	}
 
