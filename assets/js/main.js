@@ -1,11 +1,13 @@
+// const results = document.querySelector('#results')
+const searchResults = document.querySelector('.searchResults')
+
 // CAROUSEL 
 
 function getPopularCocktails(){
 
   fetch('https://www.thecocktaildb.com/api/json/v2/9973533/popular.php')
-  .then(res => res.json()) // parse response as JSON
+  .then(res => res.json()) 
   .then(data => {
-    // document.querySelector('.showResults').innerHTML = '';
     const carouselContainer = document.querySelector('#carouselWrapper')
 
     data.drinks.slice(0, 10).forEach(cocktail => {
@@ -21,7 +23,13 @@ function getPopularCocktails(){
       cocktailName.textContent = cocktail.strDrink;
 
       cocktailDiv.addEventListener('click', () => {
-        showResults(cocktail.idDrink);
+        convertFromDrinkId(cocktail.idDrink)
+          .then(data => {
+            showResults(data);
+          })
+          .catch(err => {
+            console.log(`error ${err}`);
+          });
       });
 
       cocktailDiv.appendChild(cocktailImage);
@@ -39,25 +47,42 @@ getPopularCocktails();
 
 
 
+
+
+
 // Updates Cocktail Results To The Drinks ID
 
-const cocktailSection = document.querySelector('#cocktail')
 
-document.querySelector('.searchResults').addEventListener('click', (event) => {
-  const idDrink = event.target.dataset.idDrink;
-  if (idDrink) {
-    showResults(idDrink);
-  }
-});
+// document.querySelector('.searchResults').addEventListener('click', (event) => {
+//   const idDrink = event.target.dataset.idDrink;
+//   if (idDrink) {
+//     showResults(idDrink);
+//   }
+// });
 
+function convertFromDrinkId(drinkId) {
+  return fetch(`https://www.thecocktaildb.com/api/json/v2/9973533/lookup.php?i=${drinkId}`)
+    .then(res => res.json())
+    .then(data => {
+      return data;
+    })
+    .catch(err => {
+      console.log(`error ${err}`);
+    });
+}
 
 
 // SEARCH RESULTS
 
 function showResults(data){
-document.querySelector('#cocktail').innerHTML = '';
-// cocktailSection.style.border = '0.5px solid #757575';
-// cocktailSection.style.borderRadius = '8px'; 
+  document.querySelector('#cocktailSearchResult').scrollIntoView({
+    behavior: 'smooth',
+  });
+
+
+
+document.querySelector('#cocktailSearchResult').innerHTML = '';
+
 
 
 
@@ -66,14 +91,14 @@ document.querySelector('#cocktail').innerHTML = '';
   const cocktailName = data.drinks[0].strDrink
   const cocktailNameWithoutPunctuation = cocktailName.replace(/[^\w\s]/g, '');
   const cocktailNameElement = document.createElement('h2');
-  cocktailSection.appendChild(cocktailNameElement)
+  cocktailSearchResult.appendChild(cocktailNameElement)
   cocktailNameElement.innerText = cocktailNameWithoutPunctuation;
 
 // Cocktail Image
 
   const cocktailImg = data.drinks[0].strDrinkThumb
   const cocktailImgElement = document.createElement('img');
-  cocktailSection.appendChild(cocktailImgElement);
+  cocktailSearchResult.appendChild(cocktailImgElement);
   cocktailImgElement.src = cocktailImg;
 
   cocktailImgElement.style
@@ -81,7 +106,7 @@ document.querySelector('#cocktail').innerHTML = '';
 // Cocktail Measurement & Ingredients
 
   const ingredientsElement = document.createElement('ul')
-  cocktailSection.appendChild(ingredientsElement)
+  cocktailSearchResult.appendChild(ingredientsElement)
 
   for (let i = 1; i <= 15; i++) {
     const ingredient = data.drinks[0]['strIngredient' + i];
@@ -98,7 +123,7 @@ document.querySelector('#cocktail').innerHTML = '';
   const cocktailRecipe = data.drinks[0].strInstructions
   const cocktailRecipeWithoutPunctuation = cocktailRecipe.replace(/[^\w\s]/g, '');
   const cocktailRecipeElement = document.createElement('h3');
-  cocktailSection.appendChild(cocktailRecipeElement)
+  cocktailSearchResult.appendChild(cocktailRecipeElement)
   cocktailRecipeElement.innerText = cocktailRecipeWithoutPunctuation;
 }
 
@@ -114,10 +139,16 @@ document.querySelector('#cocktail').innerHTML = '';
 document.querySelector('#byName').addEventListener('click', getCocktailByName)
 
 function getCocktailByName(){
-  const searchResults = document.querySelector('.searchResults')
+  // const searchResults = document.querySelector('.searchResults')
   document.querySelector('.searchResults').innerHTML = ''; // clear previous search
+  document.querySelector('#cocktailSearchResult').innerHTML = '';
 
   let cocktail = document.querySelector('.searchByName').value
+
+  if (!cocktail) {
+    document.querySelector('.result').innerText = '';
+    return;
+  }
 
   fetch(`https://www.thecocktaildb.com/api/json/v2/9973533/search.php?s=${cocktail}`)
     .then(res => res.json()) // parse response as JSON
@@ -126,7 +157,7 @@ function getCocktailByName(){
 
       if (data.drinks) {
         console.log(data.drinks.length)
-        document.querySelector('.result').innerText = `We have ${data.drinks.length} cocktails that match!`
+        document.querySelector('.result').innerText = `We have ${data.drinks.length} cocktails that match:`
         data.drinks.forEach(obj => {
           console.log(obj.strDrink)
           const li = document.createElement('li')
@@ -137,9 +168,7 @@ function getCocktailByName(){
           })
           
           searchResults.appendChild(li)
-          searchResults.style.border = '0.5px solid #757575';
-          searchResults.style.borderRadius = '8px'; 
-          searchResults.style.padding = '1em'; 
+
 
         })
       } else {
@@ -159,55 +188,59 @@ document.querySelector('#byIngredient').addEventListener('click', getCocktailByI
   
 
   function getCocktailByIngredient(){
-    document.querySelector('.searchResults').innerHTML = ''; // clear previous search
-  
+    document.querySelector('.searchResults').innerHTML = ''; 
+    document.querySelector('#cocktailSearchResult').innerHTML = '';
+
     let ingredient = document.querySelector('.searchByIngredient').value
   
+    if (!ingredient) {
+      document.querySelector('.result').innerText = '';
+      return;
+    }
     fetch(`https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?i=${ingredient}`)
-      .then(res => res.json()) // parse response as JSON
+      .then(res => res.json()) 
       .then(data => {
         console.log(data)
+
+
+        if (data.drinks) {
+          console.log(data.drinks.length)
+          document.querySelector('.result').innerText = `We have ${data.drinks.length} cocktails that include ${ingredient}:`
+          data.drinks.forEach(obj => {
+            console.log(obj.strDrink)
+            const li = document.createElement('li')
+            li.textContent = obj.strDrink
   
-        if (data.drinks === 'None Found') {
-          document.querySelector('.result').innerText = `We have no cocktails that include ${ingredient}, please try again!`;
-          return;
-        }
+            li.addEventListener('click', () => {
+              showResults({ drinks: [obj] })
+            })
+            
+            searchResults.appendChild(li)
+
   
-  
-        document.querySelector('.result').innerText = `There are ${data.drinks.length} cocktails that include ${ingredient}!`
-        data.drinks.forEach(obj => {
-          console.log(obj.strDrink)
-          if(data.drinks){
-          const li = document.createElement('li')
-          li.textContent = obj.strDrink 
-          li.addEventListener('click', () => {
-            showResults({ drinks: [obj] })
           })
-          document.querySelector('.searchResults').appendChild(li)
+        } else {
+          document.querySelector('.result').innerText = `We have no cocktails that include ${ingredient}, please try again.`
         }
-        showResults(data)
-      })
-  
-  
       })
       .catch(err => {
           console.log(`error ${err}`)
       });
-      }
-
-
-
+  }
+  
+  
 
 // Random cocktail
 
 document.querySelector('#random').addEventListener('click', getRandomCocktail)
 
 function getRandomCocktail(){
+  document.querySelector('.result').innerHTML ='';
+  document.querySelector('.searchResults').innerHTML ='';
 
   fetch('https://www.thecocktaildb.com/api/json/v2/9973533/random.php')
-  .then(res => res.json()) // parse response as JSON
+  .then(res => res.json())
   .then(data => {
-    // document.querySelector('.showResults').innerHTML = '';
 
     console.log(data)
     showResults(data)

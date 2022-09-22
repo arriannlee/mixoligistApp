@@ -1,11 +1,7 @@
 @import url(fontawesome-all.min.css);
 @import url("https://fonts.googleapis.com/css?family=Lato:300");
 
-/*
-	Locus by Pixelarity
-	pixelarity.com | hello@pixelarity.com
-	License: pixelarity.com/license
-*/
+
 
 html, body, div, span, applet, object,
 iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
@@ -17,7 +13,8 @@ form, label, legend, table, caption, tbody,
 tfoot, thead, tr, th, td, article, aside,
 canvas, details, embed, figure, figcaption,
 footer, header, hgroup, menu, nav, output, ruby,
-section, summary, time, mark, audio, video, {
+section, summary, time, mark, audio, video
+{
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -124,6 +121,8 @@ input, select, textarea {
 		font-weight: 300;
 		line-height: 1.75em;
 	}
+
+
 
 	a {
 		-moz-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
@@ -259,9 +258,15 @@ input, select, textarea {
 	}
 /* my code */
 
+#results{
+  padding-top: 1em;
+}
+
+
 .result{
   display: flex;
   justify-content: center;
+  text-align: center;
 }
 
 .searchResults{
@@ -270,7 +275,7 @@ input, select, textarea {
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.5em;
-  
+
 }
 
 .searchResults:hover {
@@ -347,23 +352,27 @@ input, select, textarea {
 
 /* Cocktail Results */
 
-#cocktail img{
+/* #cocktailSearchResult{
+  display: none !important;
+} */
+
+#cocktailSearchResult img{
   height: 500px;
   width: 500px;
   border-radius: 8px;
 }
 
-#cocktail ul{
+#cocktailSearchResult ul{
   padding-top: 1em;
 }
 
-#cocktail li{
+#cocktailSearchResult li{
   		font-size: 0.75em;
 		line-height: 1.5em;
     letter-spacing: 0.25em;
 }
 
-#cocktail h3{
+#cocktailSearchResult h3{
   padding: 0 4em 0 4em;
   font-size: inherit;
 }
@@ -1593,12 +1602,12 @@ input, select, textarea {
 
 		@media screen and (max-width: 480px) {
       /* Cocktail */
-      #cocktail img{
+      #cocktailSearchResult img{
         height: 250px;
         width: 100%;
       }
            
-      #cocktail h3{
+      #cocktailSearchResult h3{
         padding: 0 0.5em 0 0.5em;
         font-size: inherit;
       }
@@ -3500,14 +3509,14 @@ input, select, textarea {
 
 	}
 
-#cocktail{
+#cocktailSearchResult{
   /* background: transparent; */
   display: block;
   text-align: center;
   padding: 2em;
 }
 
-  #cocktail .img {
+  #cocktailSearchResult .img {
     display: flexbox;
     justify-content: center;
     height: 500px;
@@ -3517,7 +3526,7 @@ input, select, textarea {
     margin: 2em;
   }
 
-  #cocktail .cocktailRecipe{
+  #cocktailSearchResult .cocktailRecipe{
     padding: 0 2em 0 2em;
   }
 
