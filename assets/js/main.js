@@ -1,3 +1,4 @@
+// CAROUSEL 
 
 function getPopularCocktails(){
 
@@ -10,12 +11,18 @@ function getPopularCocktails(){
     data.drinks.slice(0, 10).forEach(cocktail => {
       const cocktailDiv = document.createElement('div');
       cocktailDiv.classList.add('cocktailCarousel');
+      cocktailDiv.dataset.idDrink = cocktail.idDrink; // add drink ID as data attribute
+
 
       const cocktailImage = document.createElement('img');
       cocktailImage.src = cocktail.strDrinkThumb;
 
-      const cocktailName = document.createElement('h4');
+      const cocktailName = document.createElement('h4');  
       cocktailName.textContent = cocktail.strDrink;
+
+      cocktailDiv.addEventListener('click', () => {
+        showResults(cocktail.idDrink);
+      });
 
       cocktailDiv.appendChild(cocktailImage);
       cocktailDiv.appendChild(cocktailName);
@@ -30,7 +37,11 @@ function getPopularCocktails(){
 
 getPopularCocktails();
 
-// Show Cocktail Results
+
+
+// Updates Cocktail Results To The Drinks ID
+
+const cocktailSection = document.querySelector('#cocktail')
 
 document.querySelector('.searchResults').addEventListener('click', (event) => {
   const idDrink = event.target.dataset.idDrink;
@@ -39,42 +50,59 @@ document.querySelector('.searchResults').addEventListener('click', (event) => {
   }
 });
 
+
+
+// SEARCH RESULTS
+
 function showResults(data){
+document.querySelector('#cocktail').innerHTML = '';
+// cocktailSection.style.border = '0.5px solid #757575';
+// cocktailSection.style.borderRadius = '8px'; 
+
+
 
 // Cocktail Name
 
   const cocktailName = data.drinks[0].strDrink
   const cocktailNameWithoutPunctuation = cocktailName.replace(/[^\w\s]/g, '');
-  const cocktailNameElement = document.querySelector('.cocktailName');
+  const cocktailNameElement = document.createElement('h2');
+  cocktailSection.appendChild(cocktailNameElement)
   cocktailNameElement.innerText = cocktailNameWithoutPunctuation;
 
 // Cocktail Image
 
   const cocktailImg = data.drinks[0].strDrinkThumb
-  const cocktailImgElement = document.querySelector('.cocktailImg');
+  const cocktailImgElement = document.createElement('img');
+  cocktailSection.appendChild(cocktailImgElement);
   cocktailImgElement.src = cocktailImg;
 
-// Cocktail Recipe & Measurements 
+  cocktailImgElement.style
 
-const ulElement = document.querySelector('.ingredients');
+// Cocktail Measurement & Ingredients
 
-for (let i = 1; i <= 15; i++) {
-  const ingredient = data.drinks[0]['strIngredient' + i];
-  const measure = data.drinks[0]['strMeasure' + i];
+  const ingredientsElement = document.createElement('ul')
+  cocktailSection.appendChild(ingredientsElement)
 
-if (ingredient && ingredient !== 'null' && measure && measure !== 'null') {
-  const liElement = document.createElement('li');
-  liElement.innerText = measure + ' ' + ingredient;
-  ulElement.appendChild(liElement);
-}
+  for (let i = 1; i <= 15; i++) {
+    const ingredient = data.drinks[0]['strIngredient' + i];
+    const measure = data.drinks[0]['strMeasure' + i];
+
+  if (ingredient && ingredient !== 'null' && measure && measure !== 'null') {
+    const liElement = document.createElement('li');
+    liElement.innerText = measure.toUpperCase() + ' ' + ingredient.toUpperCase();
+    ingredientsElement.appendChild(liElement);
+  }}
 
 // Cocktail Instructions
 
   const cocktailRecipe = data.drinks[0].strInstructions
   const cocktailRecipeWithoutPunctuation = cocktailRecipe.replace(/[^\w\s]/g, '');
-  const cocktailRecipeElement = document.querySelector('.cocktailRecipe');
+  const cocktailRecipeElement = document.createElement('h3');
+  cocktailSection.appendChild(cocktailRecipeElement)
   cocktailRecipeElement.innerText = cocktailRecipeWithoutPunctuation;
-}}
+}
+
+
 
 
 
@@ -82,22 +110,23 @@ if (ingredient && ingredient !== 'null' && measure && measure !== 'null') {
 
 
 // Search for cocktails by name:
+
 document.querySelector('#byName').addEventListener('click', getCocktailByName)
 
-
 function getCocktailByName(){
+  const searchResults = document.querySelector('.searchResults')
+  document.querySelector('.searchResults').innerHTML = ''; // clear previous search
+
   let cocktail = document.querySelector('.searchByName').value
 
   fetch(`https://www.thecocktaildb.com/api/json/v2/9973533/search.php?s=${cocktail}`)
     .then(res => res.json()) // parse response as JSON
     .then(data => {
       console.log(data)
-      // clear previous search
-      document.querySelector('.searchResults').innerHTML = '';
 
       if (data.drinks) {
         console.log(data.drinks.length)
-        document.querySelector('.test').innerText = `We have ${data.drinks.length} cocktails that match!`
+        document.querySelector('.result').innerText = `We have ${data.drinks.length} cocktails that match!`
         data.drinks.forEach(obj => {
           console.log(obj.strDrink)
           const li = document.createElement('li')
@@ -107,10 +136,14 @@ function getCocktailByName(){
             showResults({ drinks: [obj] })
           })
           
-          document.querySelector('.searchResults').appendChild(li)
+          searchResults.appendChild(li)
+          searchResults.style.border = '0.5px solid #757575';
+          searchResults.style.borderRadius = '8px'; 
+          searchResults.style.padding = '1em'; 
+
         })
       } else {
-        document.querySelector('.test').innerText = 'We have no cocktails that match your search, please try again.'
+        document.querySelector('.result').innerText = 'We have no cocktails that match your search, please try again.'
       }
     })
     .catch(err => {
@@ -119,76 +152,50 @@ function getCocktailByName(){
 }
 
 
-// document.querySelector('#byName').addEventListener('click', getCocktailByName)
-
-// function getCocktailByName(){
-//   let cocktail = document.querySelector('.searchByName').value
-
-//   fetch(`https://www.thecocktaildb.com/api/json/v2/9973533/search.php?s=${cocktail}`)
-//     .then(res => res.json()) // parse response as JSON
-//     .then(data => {
-//       console.log(data)
-//       console.log(data.drinks.length)
-//       // clear previous search
-//       document.querySelector('.searchResults').innerHTML = '';
-
-//       if(cocktail.length > 0){
-//         document.querySelector('.test').innerText = `We have ${data.drinks.length} cocktails that match!`
-//         data.drinks.forEach(obj => {
-//           console.log(obj.strDrink)
-//           const li = document.createElement('li')
-//           li.textContent = obj.strDrink
-
-//           li.addEventListener('click', () => {
-//             showResults({ drinks: [obj] })
-//           })
-          
-//           document.querySelector('.searchResults').appendChild(li)
-//         })
-//       } else {
-//         document.querySelector('.test').innerText = 'We have no cocktails that match your search, please try again.'
-
-//       }
- 
-//           })
-//     .catch(err => {
-//         console.log(`error ${err}`)
-//     });
-// }
 
 // Search for cocktails by ingredients:
 
 document.querySelector('#byIngredient').addEventListener('click', getCocktailByIngredient)
+  
 
-function getCocktailByIngredient(){
-  let ingredient = document.querySelector('.searchByIngredient').value
+  function getCocktailByIngredient(){
+    document.querySelector('.searchResults').innerHTML = ''; // clear previous search
+  
+    let ingredient = document.querySelector('.searchByIngredient').value
+  
+    fetch(`https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?i=${ingredient}`)
+      .then(res => res.json()) // parse response as JSON
+      .then(data => {
+        console.log(data)
+  
+        if (data.drinks === 'None Found') {
+          document.querySelector('.result').innerText = `We have no cocktails that include ${ingredient}, please try again!`;
+          return;
+        }
+  
+  
+        document.querySelector('.result').innerText = `There are ${data.drinks.length} cocktails that include ${ingredient}!`
+        data.drinks.forEach(obj => {
+          console.log(obj.strDrink)
+          if(data.drinks){
+          const li = document.createElement('li')
+          li.textContent = obj.strDrink 
+          li.addEventListener('click', () => {
+            showResults({ drinks: [obj] })
+          })
+          document.querySelector('.searchResults').appendChild(li)
+        }
+        showResults(data)
+      })
+  
+  
+      })
+      .catch(err => {
+          console.log(`error ${err}`)
+      });
+      }
 
-  fetch(`https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?i=${ingredient}`)
-    .then(res => res.json()) // parse response as JSON
-    .then(data => {
-      console.log(data)
-      document.querySelector('.searchResults').innerHTML = '';
 
-      document.querySelector('.test').innerText = `There are ${data.drinks.length} cocktails that include ${ingredient}!`
-      data.drinks.forEach(obj => {
-        console.log(obj.strDrink)
-        const li = document.createElement('li')
-        li.textContent = obj.strDrink 
-        li.addEventListener('click', () => {
-          showResults({ drinks: [obj] })
-        })
-        document.querySelector('.searchResults').appendChild(li)
-      // showResults(data)
-
-    
-    })
-
-
-    })
-    .catch(err => {
-        console.log(`error ${err}`)
-    });
-    }
 
 
 // Random cocktail
@@ -211,11 +218,7 @@ function getRandomCocktail(){
   })
 }
 
-// Popular Cocktails
 
-
-
-// document.querySelector('#carouselContainer').addEventListener('click', getPopularCocktails)
 
 
  
