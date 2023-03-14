@@ -84,12 +84,12 @@ input, select, textarea {
 
 
     background-color: #fff;
-		/* background-attachment: scroll,							fixed; */
+		background-attachment: scroll,							fixed;
     /* background-image:linear-gradient(45deg, #B800FF 5%, #FF00C6 50%, #3900FF); */
     /* background-image:linear-gradient(45deg,  #FF00C6 40%, #2FF3E0); */
     /* background-image:linear-gradient(45deg, #2FF3E0 10%, #F8D210 15%, #FA26A0 50%, #F51720); */
 
-    /* background-image: url("images/overlay1.png"), url("../../images/bg_ninjamode.png"); */
+    background-image: url("images/overlay1.png"), url("../../images/cocktailoverlay.jpg");
 		background-position: top left,						top center;
 		background-repeat: repeat,							no-repeat;
 		background-size: auto,							cover;
@@ -258,6 +258,14 @@ input, select, textarea {
 	}
 /* my code */
 
+/* #random{
+  margin: 1em;
+} */
+
+
+.pink{
+  color: rgba(255,0,198,0.5)!important;
+}
 #results{
   padding-top: 1em;
 }
@@ -1601,6 +1609,13 @@ input, select, textarea {
 		}
 
 		@media screen and (max-width: 480px) {
+
+      #random{
+        margin: 2em;
+      }
+      
+      
+
       /* Cocktail */
       #cocktailSearchResult img{
         height: 250px;
@@ -2238,6 +2253,7 @@ input, select, textarea {
 	ol {
 		list-style: none;
 		margin: 0 0 2em 0;
+    /* padding: 0 1.25em 0 1.25em; */
 		padding-left: 1.25em;
 	}
 
@@ -2248,7 +2264,9 @@ input, select, textarea {
 	ul {
 		list-style: none;
 		margin: 0 0 2em 0;
-		padding-left: 1em;
+    padding: 0 1em 0 1em;
+		/* padding-left: 1em;
+    padding-right: 1em; */
 	}
 
 		ul li {
@@ -3031,6 +3049,10 @@ input, select, textarea {
 
 	}
 
+  #nav{
+    display: none;
+  }
+
 /* Medium */
 
 	#navPanel, #navButton {
@@ -3067,7 +3089,7 @@ input, select, textarea {
 
 			.main.style1 > section {
 				border-left: 0 !important;
-				border-top: solid 1px #313032 !important;
+				/* border-top: solid 1px #313032 !important; */
 				float: none;
 				padding: 5em 3em 3em 3em !important;
 				width: 100%;
@@ -3453,7 +3475,7 @@ input, select, textarea {
 		/* Main */
 
 			.main.style1 > section {
-				padding: 3em 1.5em 1em 1.5em !important;
+				padding: 2em 1.5em 0em 1.5em !important;
 			}
 
 		/* Wrapper */
