@@ -1,7 +1,5 @@
 
-<img src="img/logo.png" alt="Logo" width="500" height="250">
-
-# Cocktail Ninja
+<img src="images/logo.png" alt="Logo" width="500" height="250">
 
 This is a web app that allows users to search for and browse cocktail recipes.
 
@@ -25,11 +23,8 @@ This web app was built using the following technologies:
 
 ### Screenshots
 
+<div class="image-container">
 <img src="images/Screenshot_desktop.png" alt="Desktop" width="250" height="250">
-<img src="img/screenshot2.png" alt="Screenshot" width="250" height="250">
-<img src="img/screenshot3.png" alt="Screenshot" width="250" height="250">
-
-
-
-
-
+<img src="images/Screenshot_mobile.png" alt="Mobile" width="250" height="250">
+<img src="images/Screenshot_recipe.png" alt="Screenshot" width="250" height="250">
+</div>
